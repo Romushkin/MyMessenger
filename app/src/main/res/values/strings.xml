@@ -11,4 +11,10 @@
     <string name="sign_up">Зарегистрироваться</string>
     <string name="confirm_password">Подтвердите пароль</string>
     <string name="send">Отправить</string>
+    <string name="menu_profile">Профиль</string>
+    <string name="menu_about">О приложении</string>
+    <string name="menu_exit">Выйти</string>
+    <string name="user">User</string>
+    <string name="chats_tl">Чаты</string>
+    <string name="users_tl">Пользователи</string>
 </resources>

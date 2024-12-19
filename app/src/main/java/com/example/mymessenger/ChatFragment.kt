@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.mymessenger.databinding.FragmentChatBinding
 import com.example.mymessenger.databinding.FragmentFirstBinding
 import com.example.mymessenger.databinding.FragmentForgotPasswordBinding
+import com.example.mymessenger.databinding.FragmentUserBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ChatFragment : Fragment() {
 
@@ -23,8 +27,4 @@ class ChatFragment : Fragment() {
         return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

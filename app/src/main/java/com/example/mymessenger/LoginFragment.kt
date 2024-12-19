@@ -1,5 +1,6 @@
 package com.example.mymessenger
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import com.example.mymessenger.databinding.FragmentLoginBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.ktx.database
 import com.lottiefiles.dotlottie.core.model.Config
 import com.lottiefiles.dotlottie.core.util.DotLottieSource
 
@@ -61,6 +63,9 @@ class LoginFragment : Fragment() {
                     "Вы успешно вошли в систему",
                     Toast.LENGTH_SHORT
                 ).show()
+
+                val sharedPreferences = requireActivity().getSharedPreferences("appPrefs", MODE_PRIVATE)
+                sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
                 val intent = Intent(requireActivity(), MainActivity::class.java)
                 startActivity(intent)
             } else {

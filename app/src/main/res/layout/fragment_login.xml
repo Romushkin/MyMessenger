@@ -50,7 +50,7 @@
             android:inputType="textPassword"
             android:minHeight="48dp"
             android:textColor="@color/hint_color"
-            android:textSize="24sp" />
+            android:textSize="@dimen/main_text_size" />
 
     </LinearLayout>
 
