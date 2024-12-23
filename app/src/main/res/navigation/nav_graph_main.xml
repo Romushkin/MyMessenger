@@ -3,11 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
-    app:startDestination="@id/chatFragment">
-
+    app:startDestination="@id/mainFragment">
     <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.example.mymessenger.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        android:id="@+id/singleChatFragment"
+        android:name="com.example.mymessenger.SingleChatFragment"
+        android:label="fragment_single_chat"
+        tools:layout="@layout/fragment_single_chat" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.mymessenger.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_singleChatFragment"
+            app:destination="@id/singleChatFragment" />
+    </fragment>
 </navigation>

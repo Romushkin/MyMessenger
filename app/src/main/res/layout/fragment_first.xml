@@ -24,7 +24,7 @@
         android:drawablePadding="10dp"
         android:text="@string/start_text"
         android:textAllCaps="true"
-        android:textSize="@dimen/button_text_size_small"
+        android:textSize="@dimen/_16sp"
         android:background="@drawable/buttons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -7,47 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/mediumPurple"
-        android:title="@string/app_name"
-        android:titleTextColor="@color/white"
-        tools:ignore="MissingConstraints" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/mainTabLayoutTL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:tabIndicatorColor="@color/mediumPurple"
-        app:tabIndicatorHeight="@dimen/_4dp"
-        app:tabIndicatorFullWidth="true"
-        app:tabMode="fixed"
-        app:tabTextAppearance="@style/CustomTabText">
-        
-     <com.google.android.material.tabs.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/chats_tl" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/users_tl"/>
-        
-    </com.google.android.material.tabs.TabLayout>
-
-    <FrameLayout
-        android:id="@+id/fragmentsFL"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_Host_Fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="@dimen/_0dp"
         android:layout_height="@dimen/_0dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainTabLayoutTL" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph_main" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

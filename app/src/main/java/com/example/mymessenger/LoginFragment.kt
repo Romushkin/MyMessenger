@@ -63,9 +63,6 @@ class LoginFragment : Fragment() {
                     "Вы успешно вошли в систему",
                     Toast.LENGTH_SHORT
                 ).show()
-
-                val sharedPreferences = requireActivity().getSharedPreferences("appPrefs", MODE_PRIVATE)
-                sharedPreferences.edit().putBoolean("isLoggedIn", true).apply()
                 val intent = Intent(requireActivity(), MainActivity::class.java)
                 startActivity(intent)
             } else {

@@ -14,7 +14,7 @@ import com.google.firebase.ktx.Firebase
 class RegistrationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegistrationBinding
-    var auth = Firebase.auth
+    private var auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

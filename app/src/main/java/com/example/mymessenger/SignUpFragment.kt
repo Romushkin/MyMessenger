@@ -1,19 +1,18 @@
 package com.example.mymessenger
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.mymessenger.databinding.FragmentFirstBinding
 import com.example.mymessenger.databinding.FragmentSignUpBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.database
 
 class SignUpFragment : Fragment() {
 
@@ -68,6 +67,9 @@ class SignUpFragment : Fragment() {
                     "Вы успешно зарегистрировались",
                     Toast.LENGTH_SHORT
                 ).show()
+                val database = Firebase.database
+                val reference = database.getReference("users")
+                auth.currentUser?.let { user -> reference.child(user.uid).setValue(User(email)) }
                 findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
             } else {
                 if (auth.currentUser != null) {
