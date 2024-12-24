@@ -3,8 +3,10 @@ package com.example.mymessenger
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mymessenger.databinding.SingleChatItemBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
 class SingleChatMessageAdapter(private val messages: MutableList<Message>) :
@@ -16,14 +18,15 @@ class SingleChatMessageAdapter(private val messages: MutableList<Message>) :
         fun onMessageLongClick(message: Message, position: Int)
     }
 
-    class MessageListViewHolder(val binding: SingleChatItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class MessageListViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        val messageChatTV: TextView = itemView.findViewById(R.id.messageChatTV)
+        val chatAvatarIV: ImageView = itemView.findViewById(R.id.chatAvatarIV)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
-        val binding = SingleChatItemBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-        return MessageListViewHolder(binding)
+        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
+        return MessageListViewHolder(view)
     }
 
     override fun getItemCount() = messages.size
@@ -31,17 +34,30 @@ class SingleChatMessageAdapter(private val messages: MutableList<Message>) :
     override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {
         val message = messages[position]
 
-        holder.binding.messageChatTV.text = message.text
+        holder.messageChatTV.text = message.text
 
         if (message.imageUri != null) {
-            holder.binding.chatAvatarIV.visibility = View.VISIBLE
+            holder.chatAvatarIV.visibility = View.VISIBLE
 
-            Picasso.get().load(message.imageUri).into(holder.binding.chatAvatarIV)
+            Picasso.get().load(message.imageUri).into(holder.chatAvatarIV)
         } else {
-            holder.binding.chatAvatarIV.visibility = View.GONE
+            holder.chatAvatarIV.visibility = View.GONE
 
-            holder.binding.chatAvatarIV.setImageResource(R.drawable.ic_image)
+            holder.chatAvatarIV.setImageResource(R.drawable.ic_image)
         }
+
+        holder.itemView.setOnLongClickListener {
+            onMessageLongClickListener?.onMessageLongClick(message, position)
+            true
+        }
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (messages[position].currentUserID == FirebaseAuth.getInstance().currentUser?.uid)
+            R.layout.single_chat_currentuser_item
+        else
+            R.layout.single_chat_chatmate_item
     }
 
     fun setOnMessageLongClickListener(onMessageLongClickListener: OnMessageLongClickListener) {

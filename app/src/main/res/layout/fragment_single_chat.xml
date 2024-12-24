@@ -28,25 +28,24 @@
         <TextView
             android:id="@+id/chatTitleTV"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/_40dp"
             android:text="@string/name"
-            android:textSize="25sp"
+            android:textSize="@dimen/_25sp"
             android:textStyle="bold"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="@dimen/_25dp"
             android:textColor="@color/white"/>
 
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRV"
-        android:layout_width="@dimen/_0dp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_0dp"
         android:layout_margin="@dimen/_4dp"
-        app:layout_constraintBottom_toTopOf="@+id/editMessageET"
+        app:layout_constraintBottom_toTopOf="@+id/isSendTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:listitem="@layout/single_chat_item" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <ImageButton
         android:id="@+id/attachImageIB"

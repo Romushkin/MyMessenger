@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/mediumPurple"
+        app:title=" "
+        android:titleTextColor="@color/white"
+        tools:ignore="MissingConstraints" >
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_Host_Fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

@@ -12,7 +12,7 @@
         android:title="@string/menu_about"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/menu_exit"
+        android:id="@+id/menu_logout"
         android:icon="@drawable/ic_exit"
         android:title="@string/menu_exit"
         app:showAsAction="never"/>

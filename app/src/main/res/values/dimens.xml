@@ -14,4 +14,7 @@
     <dimen name="avatar_icon">50dp</dimen>
     <dimen name="_20sp">20sp</dimen>
     <dimen name="_16sp">16sp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+    <dimen name="_25sp">25sp</dimen>
+    <dimen name="_25dp">25dp</dimen>
 </resources>

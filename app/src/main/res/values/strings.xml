@@ -24,4 +24,10 @@
     <string name="last_message">Последнее сообщение</string>
     <string name="sent">Отправлено</string>
     <string name="image_name">Название картинки</string>
+    <string name="email">Email</string>
+    <string name="surname">Фамилия</string>
+    <string name="role">Род занятий</string>
+    <string name="address">Адрес</string>
+    <string name="age">Возраст</string>
+    <string name="save">Сохранить</string>
 </resources>

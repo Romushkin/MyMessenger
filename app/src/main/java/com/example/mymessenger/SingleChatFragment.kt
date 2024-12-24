@@ -1,9 +1,12 @@
 package com.example.mymessenger
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,6 +39,7 @@ class SingleChatFragment : Fragment() {
     private lateinit var chatId: String
     private var selectedFileUri: Uri? = null
     private var isFileSelected: Boolean = false
+    private var REQUEST_IMAGE = 302
 
 
     override fun onCreateView(
@@ -127,11 +131,20 @@ class SingleChatFragment : Fragment() {
                 }, 100)
             }
         }
-        chatWithUser(
+        onChangeListener(
             database.reference.child("chats")
                 .child(chatId).child("messages")
         )
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            selectedFileUri = data.data
+            isFileSelected = true
+            binding.attachImageIB.setImageResource(R.drawable.ic_check)
+        }
     }
 
     private fun sendMessageWithAttachment(fileUri: Uri, messageText: String) {
@@ -147,7 +160,7 @@ class SingleChatFragment : Fragment() {
             .child("messages").push().setValue(message)
     }
 
-    private fun chatWithUser(reference: DatabaseReference) {
+    private fun onChangeListener(reference: DatabaseReference) {
         reference.addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -180,6 +193,9 @@ class SingleChatFragment : Fragment() {
                         binding.isSendTV.visibility = View.INVISIBLE
                     } else {
                         binding.isSendTV.visibility = View.VISIBLE
+                        Handler().postDelayed({
+                            binding.isSendTV.visibility = View.GONE
+                        }, 2000)
                     }
                 }
             }
@@ -203,21 +219,21 @@ class SingleChatFragment : Fragment() {
 
             val userId = getChatmateId(currentUserID.toString(), chatId)
             val userRef =
-                userId?.let { FirebaseDatabase.getInstance().reference.child("users").child(it) }
+                userId.let { FirebaseDatabase.getInstance().reference.child("users").child(it) }
 
             currentUserID.let { currentUserID ->
                 FirebaseDatabase.getInstance().reference.child("users").child(currentUserID)
                     .child("lastMessage").setValue(message)
             }
-            userRef?.child("lastMessage")?.setValue(message)
+            userRef.child("lastMessage").setValue(message)
 
-            userRef?.addListenerForSingleValueEvent(object : ValueEventListener {
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val token = dataSnapshot.child("token").getValue(String::class.java)
                     Log.e("pushNotification", "token: $token")
                     /*if (token != null) {
-                        pushNotification(message, token)
-                    }*/
+                                pushNotification(message, token)
+                            }*/
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -265,7 +281,6 @@ class SingleChatFragment : Fragment() {
 
     private fun deleteMessage(message: Message) {
         database.reference.child("chats").child(chatId)
-            .child("messages").child(message.id)
-            .removeValue()
+            .child("messages").child(message.id).removeValue()
     }
 }

@@ -29,6 +29,7 @@ class ChatListFragment : Fragment() {
     val auth = Firebase.auth
     val reference = database.getReference("chats")
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,7 +78,7 @@ class ChatListFragment : Fragment() {
                         if (chatSnapshot.toString().contains(currentId)) {
                             val chatmateId = getChatmateId(currentId, chatSnapshot.key.toString())
                             val lastMessage =
-                                chatSnapshot.child("messages").children.last().children.last().value
+                                chatSnapshot.child("messages").children.last().child("text").value.toString()
                             val userRef = database.getReference("users").child(chatmateId)
                             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(userSnapshot: DataSnapshot) {
@@ -87,15 +88,15 @@ class ChatListFragment : Fragment() {
                                             users.indexOfFirst { it.id == user.id }
                                         if (existingUserIndex != -1) {
                                             users[existingUserIndex].lastMessage =
-                                                lastMessage.toString()
-                                            adapter.notifyItemChanged(existingUserIndex)
+                                                lastMessage
+                                            adapter.notifyDataSetChanged()
                                         } else {
-                                            user.lastMessage = lastMessage.toString()
+                                            user.lastMessage = lastMessage
                                             users.add(user)
                                             adapter.notifyItemInserted(users.size - 1)
                                         }
+                                        }
                                     }
-                                }
 
                                 override fun onCancelled(databaseError: DatabaseError) {
                                     Log.e(

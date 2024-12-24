@@ -11,9 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/mediumPurple"
-        android:title="@string/app_name"
+        app:title=" "
         android:titleTextColor="@color/white"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints" >
+
+        <TextView
+            android:id="@+id/titleNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40dp"
+            android:text="@string/name"
+            android:textSize="@dimen/_25sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/_25dp"
+            android:textColor="@color/white"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/mainTabLayoutTL"

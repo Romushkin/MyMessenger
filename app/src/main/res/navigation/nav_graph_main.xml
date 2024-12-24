@@ -8,7 +8,11 @@
         android:id="@+id/singleChatFragment"
         android:name="com.example.mymessenger.SingleChatFragment"
         android:label="fragment_single_chat"
-        tools:layout="@layout/fragment_single_chat" />
+        tools:layout="@layout/fragment_single_chat" >
+        <action
+            android:id="@+id/action_singleChatFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.mymessenger.MainFragment"
@@ -17,5 +21,13 @@
         <action
             android:id="@+id/action_mainFragment_to_singleChatFragment"
             app:destination="@id/singleChatFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_myProfileFragment"
+            app:destination="@id/myProfileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.example.mymessenger.MyProfileFragment"
+        android:label="fragment_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
 </navigation>

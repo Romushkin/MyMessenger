@@ -2,6 +2,8 @@ package com.example.mymessenger
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,6 +27,7 @@ class UserListFragment : Fragment() {
     private val binding get() = _binding!!
     private val users: MutableList<User> = mutableListOf()
     private lateinit var adapter: UserListAdapter
+    private val allUsers: MutableList<User> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,23 +70,33 @@ class UserListFragment : Fragment() {
 
             }
         })
+
+        binding.searchET.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val query = s.toString().lowercase()
+                val filteredUsers = allUsers.filter { user ->
+                    user.name.lowercase().contains(query) || user.email.lowercase().contains(query)
+                }
+                updateUserList(filteredUsers)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
     }
 
     private fun onChangeListener(reference: DatabaseReference) {
         reference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                allUsers.clear()
                 for (i in snapshot.children) {
                     val user = i.getValue(User::class.java)
                     if (user != null) {
-                        val existingUserIndex = users.indexOfFirst { it.id == user.id }
-                        if (existingUserIndex != -1) {
-                            users[existingUserIndex] = user
-                            adapter.notifyItemChanged(existingUserIndex)
-                        } else {
-                            users.add(user)
-                            adapter.notifyItemInserted(users.size - 1)
-                        }
+                        allUsers.add(user)
                     }
+                    updateUserList(allUsers)
                 }
             }
 
@@ -92,6 +105,12 @@ class UserListFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun updateUserList(filteredUsers: List<User>) {
+        users.clear()
+        users.addAll(filteredUsers)
+        adapter.notifyDataSetChanged()
     }
 
     private fun getChatID(currentUserID: String, selectedUserID: String): String {
