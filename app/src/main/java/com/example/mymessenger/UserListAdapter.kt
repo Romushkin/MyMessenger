@@ -42,15 +42,6 @@ class UserListAdapter(private val users: MutableList<User>) :
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setUsers(newUsers: MutableList<User>) {
-        val newUsersList = mutableListOf<User>()
-        newUsersList.addAll(newUsers)
-        users.clear()
-        users.addAll(newUsersList)
-        notifyDataSetChanged()
-    }
-
     fun setOnUserClickListener(onUserClickListener: OnUserClickListener) {
         this.onUserClickListener = onUserClickListener
     }

@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 
 class ChatListFragment : Fragment() {
 
@@ -58,7 +59,10 @@ class ChatListFragment : Fragment() {
                         bundle.putString("name", user.name)
                     }
                     bundle.putString("chatID", chatID)
-                    findNavController().navigate(R.id.action_mainFragment_to_singleChatFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_mainFragment_to_singleChatFragment,
+                        bundle
+                    )
                 }
             }
         })
@@ -66,20 +70,30 @@ class ChatListFragment : Fragment() {
 
     private fun onChangeListener(reference: DatabaseReference) {
         reference.addValueEventListener(object : ValueEventListener {
-            @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
                 val currentId = auth.currentUser?.uid
                 for (chatSnapshot in snapshot.children) {
                     if (currentId != null) {
                         if (chatSnapshot.toString().contains(currentId)) {
                             val chatmateId = getChatmateId(currentId, chatSnapshot.key.toString())
+                            val lastMessage =
+                                chatSnapshot.child("messages").children.last().children.last().value
                             val userRef = database.getReference("users").child(chatmateId)
                             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(userSnapshot: DataSnapshot) {
                                     val user = userSnapshot.getValue(User::class.java)
-                                    if (user != null && !users.contains(user)) {
-                                        users.add(user)
-                                        adapter.setUsers(users)
+                                    if (user != null) {
+                                        val existingUserIndex =
+                                            users.indexOfFirst { it.id == user.id }
+                                        if (existingUserIndex != -1) {
+                                            users[existingUserIndex].lastMessage =
+                                                lastMessage.toString()
+                                            adapter.notifyItemChanged(existingUserIndex)
+                                        } else {
+                                            user.lastMessage = lastMessage.toString()
+                                            users.add(user)
+                                            adapter.notifyItemInserted(users.size - 1)
+                                        }
                                     }
                                 }
 

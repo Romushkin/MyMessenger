@@ -46,7 +46,7 @@ class UserListFragment : Fragment() {
         binding.userRV.adapter = adapter
         binding.userRV.setHasFixedSize(true)
 
-        adapter.setOnUserClickListener (object :
+        adapter.setOnUserClickListener(object :
             UserListAdapter.OnUserClickListener {
             override fun onUserClick(user: User, position: Int) {
                 val currentId = auth.currentUser?.uid
@@ -59,7 +59,10 @@ class UserListFragment : Fragment() {
                         bundle.putString("name", user.name)
                     }
                     bundle.putString("chatID", chatID)
-                    findNavController().navigate(R.id.action_mainFragment_to_singleChatFragment, bundle)
+                    findNavController().navigate(
+                        R.id.action_mainFragment_to_singleChatFragment,
+                        bundle
+                    )
                 }
 
             }
@@ -68,15 +71,20 @@ class UserListFragment : Fragment() {
 
     private fun onChangeListener(reference: DatabaseReference) {
         reference.addValueEventListener(object : ValueEventListener {
-            @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (i in snapshot.children) {
                     val user = i.getValue(User::class.java)
-                    if (user != null && !users.contains(user)) {
-                        users.add(user)
+                    if (user != null) {
+                        val existingUserIndex = users.indexOfFirst { it.id == user.id }
+                        if (existingUserIndex != -1) {
+                            users[existingUserIndex] = user
+                            adapter.notifyItemChanged(existingUserIndex)
+                        } else {
+                            users.add(user)
+                            adapter.notifyItemInserted(users.size - 1)
+                        }
                     }
                 }
-                adapter.setUsers(users)
             }
 
             override fun onCancelled(error: DatabaseError) {
