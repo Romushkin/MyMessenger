@@ -1,5 +1,7 @@
 package com.example.mymessenger
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +13,7 @@ class UserListAdapter(private val users: MutableList<User>) :
     private var onUserClickListener: OnUserClickListener? = null
 
     interface OnUserClickListener {
-        fun onUserClick(users: User, position: Int)
+        fun onUserClick(user: User, position: Int)
     }
 
     class UserListViewHolder(val binding: UserListItemBinding) :
@@ -38,6 +40,15 @@ class UserListAdapter(private val users: MutableList<User>) :
                 onUserClickListener!!.onUserClick(user, position)
             }
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setUsers(newUsers: MutableList<User>) {
+        val newUsersList = mutableListOf<User>()
+        newUsersList.addAll(newUsers)
+        users.clear()
+        users.addAll(newUsersList)
+        notifyDataSetChanged()
     }
 
     fun setOnUserClickListener(onUserClickListener: OnUserClickListener) {

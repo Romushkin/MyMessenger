@@ -1,17 +1,21 @@
 package com.example.mymessenger
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymessenger.databinding.ChatListItemBinding
+import com.squareup.picasso.Picasso
 
-class ChatListAdapter(private val chats: MutableList<User>) :
+class ChatListAdapter(private val users: MutableList<User>) :
     RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder>() {
 
     private var onChatClickListener: OnChatClickListener? = null
 
     interface OnChatClickListener {
-        fun onChatClick(users: User, position: Int)
+        fun onChatClick(user: User, position: Int)
     }
 
     class ChatListViewHolder(val binding: ChatListItemBinding) :
@@ -24,20 +28,42 @@ class ChatListAdapter(private val chats: MutableList<User>) :
         return ChatListViewHolder(binding)
     }
 
-    override fun getItemCount() = chats.size
+    override fun getItemCount() = users.size
 
     override fun onBindViewHolder(holder: ChatListViewHolder, position: Int) {
-        val chat = chats[position]
-        if (chat.name.isEmpty()) {
-            holder.binding.chatUserNameTV.text = chat.email
+        val user = users[position]
+        if (user.name.isEmpty()) {
+            holder.binding.chatUserNameTV.text = user.email
         } else
-            holder.binding.chatUserNameTV.text = chat.name
-        holder.binding.lastMessageTV.text = chat.lastMessage
+            holder.binding.chatUserNameTV.text = user.name
+        holder.binding.lastMessageTV.text = user.lastMessage
+        if (user.avatar.isNotEmpty()) {
+            Picasso.get().load(user.avatar).placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_person).into(holder.binding.avatarIV)
+        } else {
+            holder.binding.avatarIV.setImageResource(R.drawable.ic_person)
+        }
+
+        if (user.isOnline) {
+            holder.binding.statusIV.visibility = View.VISIBLE
+        } else {
+            holder.binding.statusIV.visibility = View.INVISIBLE
+        }
+
         holder.itemView.setOnClickListener {
             if (onChatClickListener != null) {
-                onChatClickListener!!.onChatClick(chat, position)
+                onChatClickListener!!.onChatClick(user, position)
             }
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setUsers(newUsers: MutableList<User>) {
+        val newUsersList = mutableListOf<User>()
+        newUsersList.addAll(newUsers)
+        users.clear()
+        users.addAll(newUsersList)
+        notifyDataSetChanged()
     }
 
     fun setOnChatClickListener(onChatClickListener: OnChatClickListener) {

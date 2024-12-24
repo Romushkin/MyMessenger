@@ -69,7 +69,7 @@ class SignUpFragment : Fragment() {
                 ).show()
                 val database = Firebase.database
                 val reference = database.getReference("users")
-                auth.currentUser?.let { user -> reference.child(user.uid).setValue(User(email)) }
+                auth.currentUser?.let { user -> reference.child(user.uid).setValue(User(user.uid, email)) }
                 findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
             } else {
                 if (auth.currentUser != null) {

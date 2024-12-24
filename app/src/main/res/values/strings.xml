@@ -18,4 +18,10 @@
     <string name="chats_tl">Чаты</string>
     <string name="users_tl">Пользователи</string>
     <string name="search">Поиск</string>
+    <string name="name">Имя</string>
+    <string name="enter_message">Введите сообщение</string>
+    <string name="received">Отправлено</string>
+    <string name="last_message">Последнее сообщение</string>
+    <string name="sent">Отправлено</string>
+    <string name="image_name">Название картинки</string>
 </resources>

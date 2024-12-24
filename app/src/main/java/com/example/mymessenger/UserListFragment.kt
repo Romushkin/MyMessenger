@@ -2,6 +2,7 @@ package com.example.mymessenger
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.auth
 
 class UserListFragment : Fragment() {
 
@@ -37,6 +39,7 @@ class UserListFragment : Fragment() {
 
         binding.userRV.layoutManager = LinearLayoutManager(requireContext())
         val database = Firebase.database
+        val auth = Firebase.auth
         val reference = database.getReference("users")
         onChangeListener(reference)
         adapter = UserListAdapter(users)
@@ -45,9 +48,20 @@ class UserListFragment : Fragment() {
 
         adapter.setOnUserClickListener (object :
             UserListAdapter.OnUserClickListener {
-            override fun onUserClick(users: User, position: Int) {
-                val singleChatFragment = SingleChatFragment()
-                findNavController().navigate(R.id.action_mainFragment_to_singleChatFragment)
+            override fun onUserClick(user: User, position: Int) {
+                val currentId = auth.currentUser?.uid
+                val chatID = getChatID(currentId.toString(), user.id)
+                if (currentId != null) {
+                    val bundle = Bundle()
+                    if (user.name.isEmpty()) {
+                        bundle.putString("name", user.email)
+                    } else {
+                        bundle.putString("name", user.name)
+                    }
+                    bundle.putString("chatID", chatID)
+                    findNavController().navigate(R.id.action_mainFragment_to_singleChatFragment, bundle)
+                }
+
             }
         })
     }
@@ -62,12 +76,18 @@ class UserListFragment : Fragment() {
                         users.add(user)
                     }
                 }
-                adapter.notifyDataSetChanged()
+                adapter.setUsers(users)
             }
 
             override fun onCancelled(error: DatabaseError) {
+                Log.e("Firebase", "Error: ${error.message}")
             }
 
         })
+    }
+
+    private fun getChatID(currentUserID: String, selectedUserID: String): String {
+        val users = listOf(currentUserID, selectedUserID)
+        return users.sorted().joinToString("-")
     }
 }
