@@ -243,14 +243,12 @@ class MyProfileFragment : Fragment() {
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Запрашиваем разрешение
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(Manifest.permission.CAMERA),
                 REQUEST_CAMERA_PERMISSION
             )
         } else {
-            // Разрешение уже есть, сразу запускаем камеру
             launchCameraIntent()
         }
     }
@@ -285,10 +283,8 @@ class MyProfileFragment : Fragment() {
         when (requestCode) {
             REQUEST_CAMERA_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Разрешение получено, сразу запускаем камеру
                     launchCameraIntent()
                 } else {
-                    // Разрешение не предоставлено
                     Toast.makeText(
                         requireActivity(),
                         "Требуется разрешение на камеру",
@@ -369,7 +365,7 @@ class MyProfileFragment : Fragment() {
             Picasso.get()
                 .load(filePath)
                 .placeholder(R.drawable.profilebackground)
-                .error(R.drawable.ic_person)
+                .error(R.drawable.profile)
                 .into(binding.myProfileImageIV)
         } else {
             Toast.makeText(requireActivity(), "Изображение не найдено", Toast.LENGTH_SHORT).show()
