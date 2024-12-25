@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -32,6 +35,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 
 class SingleChatFragment : Fragment() {
@@ -64,7 +69,30 @@ class SingleChatFragment : Fragment() {
         val userName = arguments?.getString("name").toString()
         binding.chatTitleTV.text = userName
         chatId = arguments?.getString("chatID").toString()
+        val profileImageUri = arguments?.getString("profileImageUri").toString()
 
+        if (!profileImageUri.isNullOrEmpty()) {
+            Picasso.get()
+                .load(profileImageUri)
+                .placeholder(R.drawable.ic_person)
+                .error(R.drawable.ic_person)
+                .into(object : com.squareup.picasso.Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                        val drawable = BitmapDrawable(resources, bitmap)
+                        binding.chatImageIV.setImageDrawable(drawable)
+                    }
+
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                        Log.e("Picasso", "Failed to load image: $e")
+                    }
+
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                })
+        } else {
+            Picasso.get()
+                .load(R.drawable.ic_person)
+                .into(binding.chatImageIV)
+        }
 
         binding.chatmateInfoLL.setOnClickListener{
             val userId = Firebase.auth.currentUser?.let { it1 -> getChatmateId(it1.uid, chatId) }

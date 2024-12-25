@@ -63,6 +63,7 @@ class UserListFragment : Fragment() {
                         bundle.putString("name", user.name)
                     }
                     bundle.putString("chatID", chatID)
+                    bundle.putString("profileImageUri", user.profileImageUri)
                     findNavController().navigate(
                         R.id.action_mainFragment_to_singleChatFragment,
                         bundle

@@ -1,5 +1,6 @@
 package com.example.mymessenger.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -61,6 +62,7 @@ class ChatListFragment : Fragment() {
                         bundle.putString("name", user.name)
                     }
                     bundle.putString("chatID", chatID)
+                    bundle.putString("profileImageUri", user.profileImageUri)
                     findNavController().navigate(
                         R.id.action_mainFragment_to_singleChatFragment,
                         bundle
@@ -82,6 +84,7 @@ class ChatListFragment : Fragment() {
                                 chatSnapshot.child("messages").children.last().child("text").value.toString()
                             val userRef = database.getReference("users").child(chatmateId)
                             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                @SuppressLint("NotifyDataSetChanged")
                                 override fun onDataChange(userSnapshot: DataSnapshot) {
                                     val user = userSnapshot.getValue(User::class.java)
                                     if (user != null) {
@@ -92,6 +95,7 @@ class ChatListFragment : Fragment() {
                                                 lastMessage
                                             adapter.notifyDataSetChanged()
                                         } else {
+
                                             user.lastMessage = lastMessage
                                             users.add(user)
                                             adapter.notifyItemInserted(users.size - 1)
