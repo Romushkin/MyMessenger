@@ -87,6 +87,7 @@ class ChatListFragment : Fragment() {
                                 @SuppressLint("NotifyDataSetChanged")
                                 override fun onDataChange(userSnapshot: DataSnapshot) {
                                     val user = userSnapshot.getValue(User::class.java)
+                                    user?.isOnline = userSnapshot.child("isOnline").getValue(Boolean::class.java) ?: false
                                     if (user != null) {
                                         val existingUserIndex =
                                             users.indexOfFirst { it.id == user.id }
@@ -98,7 +99,7 @@ class ChatListFragment : Fragment() {
 
                                             user.lastMessage = lastMessage
                                             users.add(user)
-                                            adapter.notifyItemInserted(users.size - 1)
+                                            adapter.notifyDataSetChanged()
                                         }
                                         }
                                     }

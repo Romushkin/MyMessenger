@@ -10,7 +10,7 @@ data class User(
     val age: String = "",
     val phone: String = "",
     var lastMessage: String = "",
-    val isOnline: Boolean = false,
+    var isOnline: Boolean = false,
     val profileImageUri: String = ""
 )
 
