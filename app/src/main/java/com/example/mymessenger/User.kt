@@ -9,8 +9,8 @@ data class User(
     val address: String = "",
     val age: String = "",
     val phone: String = "",
-    val avatar: String = "",
     var lastMessage: String = "",
-    val isOnline: Boolean = false
+    val isOnline: Boolean = false,
+    val profileImageUri: String = ""
 )
 

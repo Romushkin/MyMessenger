@@ -37,8 +37,8 @@ class ChatListAdapter(private val users: MutableList<User>) :
         } else
             holder.binding.chatUserNameTV.text = user.name
         holder.binding.lastMessageTV.text = user.lastMessage
-        if (user.avatar.isNotEmpty()) {
-            Picasso.get().load(user.avatar).placeholder(R.drawable.ic_person)
+        if (user.profileImageUri.isNotEmpty()) {
+            Picasso.get().load(user.profileImageUri).placeholder(R.drawable.ic_person)
                 .error(R.drawable.ic_person).into(holder.binding.avatarIV)
         } else {
             holder.binding.avatarIV.setImageResource(R.drawable.ic_person)
