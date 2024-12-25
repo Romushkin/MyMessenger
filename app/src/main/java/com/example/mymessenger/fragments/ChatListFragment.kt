@@ -1,6 +1,5 @@
-package com.example.mymessenger
+package com.example.mymessenger.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mymessenger.R
+import com.example.mymessenger.adapters.ChatListAdapter
 import com.example.mymessenger.databinding.FragmentChatListBinding
+import com.example.mymessenger.models.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
@@ -17,7 +19,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import com.google.firebase.database.getValue
 
 class ChatListFragment : Fragment() {
 
@@ -99,10 +100,7 @@ class ChatListFragment : Fragment() {
                                     }
 
                                 override fun onCancelled(databaseError: DatabaseError) {
-                                    Log.e(
-                                        "ChatsFragment",
-                                        "Failed to retrieve user data: $databaseError"
-                                    )
+
                                 }
                             })
                         }
@@ -111,7 +109,7 @@ class ChatListFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e("Firebase", "Error: ${error.message}")
+
             }
 
         })

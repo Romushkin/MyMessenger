@@ -1,4 +1,4 @@
-package com.example.mymessenger
+package com.example.mymessenger.fragments
 
 import android.Manifest
 import android.app.Activity
@@ -21,6 +21,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.mymessenger.R
 import com.example.mymessenger.databinding.FragmentMyProfileBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -242,15 +243,18 @@ class MyProfileFragment : Fragment() {
                 Manifest.permission.CAMERA
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            // Запрашиваем разрешение
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(Manifest.permission.CAMERA),
                 REQUEST_CAMERA_PERMISSION
             )
         } else {
+            // Разрешение уже есть, сразу запускаем камеру
             launchCameraIntent()
         }
     }
+
 
 
     private fun launchCameraIntent() {
@@ -261,6 +265,7 @@ class MyProfileFragment : Fragment() {
             Toast.makeText(requireActivity(), "Камера не поддерживается на этом устройстве", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun savePhoneNumberToDB(countryCode: String, phoneNumber: String) {
         val database = FirebaseDatabase.getInstance()
@@ -280,8 +285,10 @@ class MyProfileFragment : Fragment() {
         when (requestCode) {
             REQUEST_CAMERA_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Разрешение получено, сразу запускаем камеру
                     launchCameraIntent()
                 } else {
+                    // Разрешение не предоставлено
                     Toast.makeText(
                         requireActivity(),
                         "Требуется разрешение на камеру",
@@ -296,47 +303,63 @@ class MyProfileFragment : Fragment() {
     }
 
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap?
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_SELECT_IMAGE -> {
+                    val selectedImageUri = data?.data
+                    if (selectedImageUri != null) {
+                        binding.myProfileImageIV.setImageURI(selectedImageUri)
 
-            if (imageBitmap != null) {
-                binding.myProfileImageIV.setImageBitmap(imageBitmap)
-
-                val fileName = "profile_${System.currentTimeMillis()}.jpg"
-                val filePath = File(requireContext().filesDir, fileName)
-                try {
-                    val fos = FileOutputStream(filePath)
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-                    fos.close()
-
-                    saveProfileImageNameToDatabase(fileName)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(requireActivity(), "Ошибка сохранения изображения", Toast.LENGTH_SHORT).show()
+                        saveProfileImageToDatabase(selectedImageUri.toString())
+                    } else {
+                        Toast.makeText(requireActivity(), "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            } else {
-                Toast.makeText(requireActivity(), "Не удалось захватить изображение", Toast.LENGTH_SHORT).show()
+
+                REQUEST_CODE_SELECT_PHOTO -> {
+                    val imageBitmap = data?.extras?.get("data") as Bitmap?
+                    if (imageBitmap != null) {
+                        binding.myProfileImageIV.setImageBitmap(imageBitmap)
+
+                        val fileName = "profile_${System.currentTimeMillis()}.jpg"
+                        val filePath = File(requireContext().filesDir, fileName)
+                        try {
+                            val fos = FileOutputStream(filePath)
+                            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                            fos.close()
+
+                            saveProfileImageToDatabase(fileName)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Toast.makeText(requireActivity(), "Ошибка сохранения изображения", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(requireActivity(), "Не удалось захватить изображение", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
 
 
-    private fun saveProfileImageNameToDatabase(fileName: String) {
+    private fun saveProfileImageToDatabase(imagePath: String) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val userRef = FirebaseDatabase.getInstance().getReference("users").child(userId!!)
 
-        userRef.child("profileImageUri").setValue(fileName)
+        userRef.child("profileImageUri").setValue(imagePath)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(requireActivity(), "Имя изображения сохранено", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "Изображение сохранено", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(requireActivity(), "Ошибка сохранения имени изображения", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), "Ошибка сохранения изображения", Toast.LENGTH_SHORT).show()
                 }
             }
     }
+
 
 
     private fun loadProfileImage(fileName: String) {

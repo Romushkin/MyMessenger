@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mymessenger.databinding.ActivityMainBinding
+import com.example.mymessenger.fragments.MyProfileFragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 

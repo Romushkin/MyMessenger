@@ -1,4 +1,4 @@
-package com.example.mymessenger
+package com.example.mymessenger.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymessenger.R
+import com.example.mymessenger.models.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 
@@ -21,7 +23,7 @@ class SingleChatMessageAdapter(private val messages: MutableList<Message>) :
     class MessageListViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         val messageChatTV: TextView = itemView.findViewById(R.id.messageChatTV)
-        val chatAvatarIV: ImageView = itemView.findViewById(R.id.chatAvatarIV)
+        val chatImageIV: ImageView = itemView.findViewById(R.id.chatImageIV)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
@@ -37,13 +39,13 @@ class SingleChatMessageAdapter(private val messages: MutableList<Message>) :
         holder.messageChatTV.text = message.text
 
         if (message.imageUri != null) {
-            holder.chatAvatarIV.visibility = View.VISIBLE
+            holder.chatImageIV.visibility = View.VISIBLE
 
-            Picasso.get().load(message.imageUri).into(holder.chatAvatarIV)
+            Picasso.get().load(message.imageUri).into(holder.chatImageIV)
         } else {
-            holder.chatAvatarIV.visibility = View.GONE
+            holder.chatImageIV.visibility = View.GONE
 
-            holder.chatAvatarIV.setImageResource(R.drawable.ic_image)
+            holder.chatImageIV.setImageResource(R.drawable.ic_image)
         }
 
         holder.itemView.setOnLongClickListener {

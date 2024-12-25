@@ -1,4 +1,4 @@
-package com.example.mymessenger
+package com.example.mymessenger.fragments
 
 import android.content.Intent
 import android.net.Uri
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.mymessenger.R
 import com.example.mymessenger.databinding.FragmentProfileInfoBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

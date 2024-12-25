@@ -1,4 +1,4 @@
-package com.example.mymessenger
+package com.example.mymessenger.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mymessenger.Tabs.Companion.tabs
+import com.example.mymessenger.adapters.TabsAdapter
+import com.example.mymessenger.models.Tabs.Companion.tabs
 import com.example.mymessenger.databinding.FragmentMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.Firebase

@@ -1,11 +1,10 @@
-package com.example.mymessenger
+package com.example.mymessenger.adapters
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymessenger.databinding.UserListItemBinding
+import com.example.mymessenger.models.User
 
 class UserListAdapter(private val users: MutableList<User>) :
     RecyclerView.Adapter<UserListAdapter.UserListViewHolder>() {

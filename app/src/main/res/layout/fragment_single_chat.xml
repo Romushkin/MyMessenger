@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SingleChatFragment">
+    tools:context=".fragments.SingleChatFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/chatAvatarIV"
+                android:id="@+id/chatImageIV"
                 android:layout_width="@dimen/avatar_icon"
                 android:layout_height="@dimen/avatar_icon"
                 android:src="@drawable/ic_person"

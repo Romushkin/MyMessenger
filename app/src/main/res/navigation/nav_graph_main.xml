@@ -6,7 +6,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/singleChatFragment"
-        android:name="com.example.mymessenger.SingleChatFragment"
+        android:name="com.example.mymessenger.fragments.SingleChatFragment"
         android:label="fragment_single_chat"
         tools:layout="@layout/fragment_single_chat" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.mymessenger.MainFragment"
+        android:name="com.example.mymessenger.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -30,12 +30,12 @@
     </fragment>
     <fragment
         android:id="@+id/myProfileFragment"
-        android:name="com.example.mymessenger.MyProfileFragment"
+        android:name="com.example.mymessenger.fragments.MyProfileFragment"
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" />
     <fragment
         android:id="@+id/profileInfoFragment"
-        android:name="com.example.mymessenger.ProfileInfoFragment"
+        android:name="com.example.mymessenger.fragments.ProfileInfoFragment"
         android:label="fragment_profile_info"
         tools:layout="@layout/fragment_profile_info" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.mymessenger
+package com.example.mymessenger.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,7 +19,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mymessenger.R
+import com.example.mymessenger.adapters.SingleChatMessageAdapter
 import com.example.mymessenger.databinding.FragmentSingleChatBinding
+import com.example.mymessenger.models.Message
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -40,7 +44,7 @@ class SingleChatFragment : Fragment() {
     private lateinit var chatId: String
     private var selectedFileUri: Uri? = null
     private var isFileSelected: Boolean = false
-    private var REQUEST_IMAGE = 302
+    private var REQUEST_SELECT_FILE = 302
 
 
     override fun onCreateView(
@@ -74,7 +78,7 @@ class SingleChatFragment : Fragment() {
                 selectedFileUri?.let {
                     sendMessageWithAttachment(it, binding.editMessageET.text.toString())
 
-                    binding.attachImageIB.setImageResource(R.drawable.ic_image)
+                    binding.attachImageIB.setImageResource(R.drawable.ic_attach_file)
                     selectedFileUri = null
                     isFileSelected = false
                     binding.editMessageET.text.clear()
@@ -137,11 +141,20 @@ class SingleChatFragment : Fragment() {
                 .child(chatId).child("messages")
         )
 
+        binding.attachImageIB.setOnClickListener {
+            openGalleryForFile()
+        }
+
+    }
+
+    private fun openGalleryForFile() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_SELECT_FILE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+        if (requestCode == REQUEST_SELECT_FILE && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             selectedFileUri = data.data
             isFileSelected = true
             binding.attachImageIB.setImageResource(R.drawable.ic_check)

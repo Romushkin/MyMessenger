@@ -1,4 +1,4 @@
-package com.example.mymessenger
+package com.example.mymessenger.models
 
 data class Message(
     var id: String,

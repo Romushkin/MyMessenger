@@ -1,12 +1,12 @@
-package com.example.mymessenger
+package com.example.mymessenger.adapters
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymessenger.R
 import com.example.mymessenger.databinding.ChatListItemBinding
+import com.example.mymessenger.models.User
 import com.squareup.picasso.Picasso
 
 class ChatListAdapter(private val users: MutableList<User>) :

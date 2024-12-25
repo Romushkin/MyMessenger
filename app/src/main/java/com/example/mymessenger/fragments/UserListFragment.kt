@@ -1,6 +1,5 @@
-package com.example.mymessenger
+package com.example.mymessenger.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,8 +16,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.example.mymessenger.R
+import com.example.mymessenger.adapters.UserListAdapter
+import com.example.mymessenger.models.User
 import com.google.firebase.auth.auth
 
 class UserListFragment : Fragment() {
