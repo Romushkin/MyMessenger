@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymessenger.databinding.FragmentSingleChatBinding
 import com.google.firebase.Firebase
@@ -60,31 +61,31 @@ class SingleChatFragment : Fragment() {
         binding.chatTitleTV.text = userName
         chatId = arguments?.getString("chatID").toString()
 
+
+        binding.chatmateInfoLL.setOnClickListener{
+            val userId = Firebase.auth.currentUser?.let { it1 -> getChatmateId(it1.uid, chatId) }
+            val bundle = Bundle()
+            bundle.putString("userId", userId)
+            findNavController().navigate(R.id.action_singleChatFragment_to_profileInfoFragment, bundle)
+        }
+
         binding.sendMessageIB.setOnClickListener {
-            // Проверяем, был ли выбран файл
             if (isFileSelected) {
-                // Если файл выбран, отправляем его как вложение
                 selectedFileUri?.let {
-                    // Отправляем сообщение с файлом (или изображением)
                     sendMessageWithAttachment(it, binding.editMessageET.text.toString())
 
-                    // После отправки сбрасываем состояния выбора файла
-                    binding.attachImageIB.setImageResource(R.drawable.ic_image) // Заглушка или иконка вложения
-                    selectedFileUri = null // Очищаем URI
-                    isFileSelected = false // Убираем флаг выбора файла
-                    binding.editMessageET.text.clear() // Очищаем поле ввода сообщения
+                    binding.attachImageIB.setImageResource(R.drawable.ic_image)
+                    selectedFileUri = null
+                    isFileSelected = false
+                    binding.editMessageET.text.clear()
                 }
             } else {
-                // Если файл не выбран, отправляем только текстовое сообщение
                 val messageText = binding.editMessageET.text.toString()
                 if (messageText.isNotEmpty()) {
-                    // Отправляем текстовое сообщение
                     sendMessage(messageText)
 
-                    // Очищаем поле ввода после отправки
                     binding.editMessageET.text.clear()
                 } else {
-                    // Если поле ввода пустое, показываем сообщение
                     Toast.makeText(
                         requireContext(),
                         "Сообщение не может быть пустым",
@@ -148,12 +149,11 @@ class SingleChatFragment : Fragment() {
     }
 
     private fun sendMessageWithAttachment(fileUri: Uri, messageText: String) {
-        // Реализуйте отправку сообщения с файлом (например, загружайте файл на сервер)
         val currentUserID = Firebase.auth.currentUser?.uid
         val message = mapOf(
             "text" to messageText,
             "currentUserID" to currentUserID,
-            "imageUri" to fileUri.toString(), // Передаем путь к файлу в сообщении
+            "imageUri" to fileUri.toString(),
             "read" to false
         )
         database.reference.child("chats").child(chatId)
@@ -256,20 +256,18 @@ class SingleChatFragment : Fragment() {
         }
     }
 
-
     @SuppressLint("MissingInflatedId", "SetTextI18n")
     fun showImageDialog(imageUri: String) {
         val builder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.dialog_image, null)
         val imageView: ImageView = dialogView.findViewById(R.id.dialogIV)
 
-        // Отображаем название картинки, если это строка, а не URI
-        imageView.setImageDrawable(null) // Очистим изображение, если вдруг оно было установлено раньше
-        imageView.setVisibility(View.GONE) // Скрываем ImageView, так как изображения нет
+        imageView.setImageDrawable(null)
+        imageView.setVisibility(View.GONE)
 
         val textView: TextView =
-            dialogView.findViewById(R.id.imageDialogTV) // Предполагаем, что в layout есть TextView для текста
-        textView.text = "Название изображения: $imageUri" // Отображаем название картинки
+            dialogView.findViewById(R.id.imageDialogTV)
+        textView.text = "Название изображения: $imageUri"
 
         builder.setView(dialogView)
             .setPositiveButton("Закрыть") { dialog, _ ->

@@ -33,6 +33,10 @@
     <string name="verify">Не верифицирован</string>
     <string name="enter_phone">Введите свой номер</string>
     <string name="apply">Применить</string>
+    <string name="id">Индентификатор</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="call">Позвонить</string>
+    <string name="send_sms">Отправить SMS</string>
 
     <string-array name="country_codes">
         <item>+7</item>

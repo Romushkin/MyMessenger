@@ -18,23 +18,30 @@
         app:title=" "
         app:titleTextColor="@color/white">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/chatAvatarIV"
-            android:src="@drawable/ic_person"
-            app:civ_circle_background_color="@color/white"
-            android:layout_width="@dimen/avatar_icon"
-            android:layout_height="@dimen/avatar_icon" />
-
-        <TextView
-            android:id="@+id/chatTitleTV"
+        <LinearLayout
+            android:id="@+id/chatmateInfoLL"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_40dp"
-            android:text="@string/name"
-            android:textSize="@dimen/_25sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="@dimen/_25dp"
-            android:textColor="@color/white"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/chatAvatarIV"
+                android:layout_width="@dimen/avatar_icon"
+                android:layout_height="@dimen/avatar_icon"
+                android:src="@drawable/ic_person"
+                app:civ_circle_background_color="@color/white" />
+
+            <TextView
+                android:id="@+id/chatTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_40dp"
+                android:layout_marginLeft="@dimen/_25dp"
+                android:text="@string/name"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_25sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -74,10 +81,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="@string/sent"
-        android:textSize="11sp"
         android:layout_marginEnd="@dimen/_20dp"
         android:layout_marginBottom="@dimen/_10dp"
+        android:text="@string/sent"
+        android:textSize="11sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/editMessageET"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -86,9 +93,9 @@
         android:id="@+id/sendMessageIB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/ic_send"
         app:backgroundTint="@android:color/transparent"
-        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/editMessageET"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editMessageET" />

@@ -28,14 +28,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_profile -> {
-                val userId = Firebase.auth.currentUser?.uid
-                val bundle = Bundle()
-                bundle.putString("userId", userId)
-                val myProfileFragment = MyProfileFragment()
-                myProfileFragment.arguments = bundle
-
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.nav_Host_Fragment, myProfileFragment)
+                    .replace(R.id.nav_Host_Fragment, MyProfileFragment())
                     .addToBackStack(null)
                     .commit()
                 return true

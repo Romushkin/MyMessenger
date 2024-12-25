@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_singleChatFragment_to_myProfileFragment"
             app:destination="@id/myProfileFragment" />
+        <action
+            android:id="@+id/action_singleChatFragment_to_profileInfoFragment"
+            app:destination="@id/profileInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
@@ -30,4 +33,9 @@
         android:name="com.example.mymessenger.MyProfileFragment"
         android:label="fragment_my_profile"
         tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/profileInfoFragment"
+        android:name="com.example.mymessenger.ProfileInfoFragment"
+        android:label="fragment_profile_info"
+        tools:layout="@layout/fragment_profile_info" />
 </navigation>

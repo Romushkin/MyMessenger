@@ -6,11 +6,7 @@
         android:icon="@drawable/ic_login"
         android:title="@string/menu_profile"
         app:showAsAction="never"/>
-    <item
-        android:id="@+id/menu_about"
-        android:icon="@drawable/ic_info"
-        android:title="@string/menu_about"
-        app:showAsAction="never"/>
+
     <item
         android:id="@+id/menu_logout"
         android:icon="@drawable/ic_exit"
