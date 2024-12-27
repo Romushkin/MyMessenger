@@ -83,7 +83,7 @@ class ChatListFragment : Fragment() {
                             val lastMessage =
                                 chatSnapshot.child("messages").children.last().child("text").value.toString()
                             val userRef = database.getReference("users").child(chatmateId)
-                            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                            userRef.addValueEventListener(object : ValueEventListener {
                                 @SuppressLint("NotifyDataSetChanged")
                                 override fun onDataChange(userSnapshot: DataSnapshot) {
                                     val user = userSnapshot.getValue(User::class.java)
@@ -92,6 +92,7 @@ class ChatListFragment : Fragment() {
                                         val existingUserIndex =
                                             users.indexOfFirst { it.id == user.id }
                                         if (existingUserIndex != -1) {
+                                            users[existingUserIndex].name = user.name
                                             users[existingUserIndex].lastMessage =
                                                 lastMessage
                                             adapter.notifyDataSetChanged()

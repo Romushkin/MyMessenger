@@ -3,7 +3,7 @@ package com.example.mymessenger.models
 data class User(
     val id: String = "",
     val email: String = "",
-    val name: String = "",
+    var name: String = "",
     val surname: String = "",
     val role: String = "",
     val address: String = "",

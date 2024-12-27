@@ -19,7 +19,6 @@ import com.example.mymessenger.models.Tabs.Companion.tabs
 import com.example.mymessenger.databinding.FragmentMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

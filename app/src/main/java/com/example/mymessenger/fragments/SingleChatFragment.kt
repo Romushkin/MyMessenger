@@ -26,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymessenger.R
-import com.example.mymessenger.RegistrationActivity
 import com.example.mymessenger.adapters.SingleChatMessageAdapter
 import com.example.mymessenger.databinding.FragmentSingleChatBinding
 import com.example.mymessenger.models.Message
@@ -49,7 +48,6 @@ class SingleChatFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: SingleChatMessageAdapter
     private val database = Firebase.database
-    private val auth = Firebase.auth
     private lateinit var chatId: String
     private var selectedFileUri: Uri? = null
     private var isFileSelected: Boolean = false
