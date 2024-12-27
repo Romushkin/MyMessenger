@@ -37,6 +37,7 @@
     <string name="phone_number">Номер телефона</string>
     <string name="call">Позвонить</string>
     <string name="send_sms">Отправить SMS</string>
+    <string name="visit_profile">Посетить профиль</string>
 
     <string-array name="country_codes">
         <item>+7</item>

@@ -14,6 +14,9 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -23,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymessenger.R
+import com.example.mymessenger.RegistrationActivity
 import com.example.mymessenger.adapters.SingleChatMessageAdapter
 import com.example.mymessenger.databinding.FragmentSingleChatBinding
 import com.example.mymessenger.models.Message
@@ -268,20 +272,6 @@ class SingleChatFragment : Fragment() {
             }
             userRef.child("lastMessage").setValue(message)
 
-            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val token = dataSnapshot.child("token").getValue(String::class.java)
-                    Log.e("pushNotification", "token: $token")
-                    /*if (token != null) {
-                                pushNotification(message, token)
-                            }*/
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("pushNotification", "User data token could not be uploaded: $error")
-                }
-            })
-
 
         } else {
             Log.e("sendMessage", "Error: currentUser or uid is null")
@@ -322,4 +312,24 @@ class SingleChatFragment : Fragment() {
         database.reference.child("chats").child(chatId)
             .child("messages").child(message.id).removeValue()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_single_chat, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_chatmate_profile -> {
+                val userId = Firebase.auth.currentUser?.let { it1 -> getChatmateId(it1.uid, chatId) }
+                val bundle = Bundle()
+                bundle.putString("userId", userId)
+                findNavController().navigate(R.id.action_singleChatFragment_to_profileInfoFragment, bundle)
+                return true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
 }
